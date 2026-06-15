@@ -96,6 +96,32 @@ body {
   font-size: 0.9rem;
 }
 
+.filtro-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 14px;
+  margin-bottom: 12px;
+}
+
+.filtro-box label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1 1 220px;
+  color: #f0f0f3;
+  font-weight: bold;
+}
+
+.filtro-box input,
+.filtro-box select {
+  padding: 10px;
+  border: 1px solid #383840;
+  border-radius: 10px;
+  background-color: #0f0f10;
+  color: #f5f5f5;
+}
+
 .moeda-box {
   margin-top: 14px;
   margin-bottom: 18px;
@@ -186,6 +212,12 @@ body {
   transform: translateY(-6px);
   box-shadow: 0 18px 30px rgba(0, 0, 0, 0.38);
   border-color: #6a3fc0;
+}
+
+.produto-ativo {
+  border-color: #8d68da;
+  box-shadow: 0 0 0 2px rgba(141, 104, 218, 0.32), 0 18px 32px rgba(0, 0, 0, 0.38);
+  transform: translateY(-4px);
 }
 
 .imagem-produto {
@@ -279,6 +311,31 @@ body {
 
 .campo-pequeno {
   max-width: 250px;
+}
+
+.pagamento-padrao,
+.pagamento-pix,
+.pagamento-cartao,
+.pagamento-boleto {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.pagamento-pix {
+  border-color: #3e9b7a !important;
+  background-color: #10201b !important;
+  color: #d8fff2 !important;
+}
+
+.pagamento-cartao {
+  border-color: #4d69c7 !important;
+  background-color: #131a2f !important;
+  color: #e1e9ff !important;
+}
+
+.pagamento-boleto {
+  border-color: #a7842a !important;
+  background-color: #251f10 !important;
+  color: #fff1c9 !important;
 }
 
 .formulario-compra-escondido {
@@ -494,6 +551,10 @@ body {
   }
 
   .linha-botoes {
+    flex-direction: column;
+  }
+
+  .filtro-box {
     flex-direction: column;
   }
 

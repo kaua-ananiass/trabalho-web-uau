@@ -25,8 +25,22 @@
     </section>
 
     <section class="caixa">
-      <h2>Produtos para comprar</h2>
-      <p>Escolha um produto. Depois disso o formulario da compra aparece logo abaixo para finalizar o pedido.</p>
+      <div class="filtro-box">
+        <label for="buscaProduto">
+          Buscar produto
+          <input id="buscaProduto" type="text" placeholder="Digite gato, hamster, danger...">
+        </label>
+
+        <label for="filtroTipo">
+          Filtrar por tipo
+          <select id="filtroTipo">
+            <option value="todos">Todos</option>
+            <option value="gato">Gato</option>
+            <option value="hamster">Hamster</option>
+          </select>
+        </label>
+      </div>
+      <p id="statusFiltro" class="api-info">Mostrando todos os produtos da loja.</p>
       <div class="moeda-box">
         <label for="moedaSelect">Ver precos em outra moeda</label>
         <select id="moedaSelect" class="campo-moeda">
@@ -40,7 +54,7 @@
       </div>
 
       <div class="lista-produtos">
-        <article class="produto">
+        <article class="produto" data-tipo="gato" data-nome="camiseta gato huh">
           <img
             class="imagem-produto"
             src="imagens/D_Q_NP_2X_930253-MLB82586863637_022025-E-camiseta-basica-engracada-unissex-gato-huh-meme-100-algodao.png"
@@ -53,7 +67,7 @@
           </button>
         </article>
 
-        <article class="produto">
+        <article class="produto" data-tipo="gato" data-nome="camiseta gato danger">
           <img
             class="imagem-produto"
             src="imagens/D_Q_NP_2X_645750-MLB87160395916_072025-E-camiseta-estampa-gato-meme-danger-to-society-camisa-unissex.png"
@@ -66,7 +80,7 @@
           </button>
         </article>
 
-        <article class="produto">
+        <article class="produto" data-tipo="hamster" data-nome="camiseta hamster chorando">
           <img
             class="imagem-produto"
             src="imagens/D_Q_NP_2X_655339-CBT91568445436_092025-E-camiseta-meme-de-hamster-chorando-olhos-grandes-engracado.webp"
@@ -97,7 +111,7 @@
         <input type="text" id="cepCliente" placeholder="Digite o CEP para envio" required>
 
         <label for="pagamentoCliente">Forma de pagamento</label>
-        <select id="pagamentoCliente">
+        <select id="pagamentoCliente" class="pagamento-padrao">
           <option value="Pix">Pix</option>
           <option value="Cartao">Cartao</option>
           <option value="Boleto">Boleto</option>
@@ -134,6 +148,15 @@
           </tr>
         </tbody>
       </table>
+
+      <div class="linha-botoes">
+        <button id="removerUltimaCompraBtn" class="botao-simples" type="button">
+          Remover ultima compra
+        </button>
+        <button id="limparComprasBtn" class="botao-simples" type="button">
+          Limpar tabela
+        </button>
+      </div>
 
       <p>
         Depois da compra, voce pode ir para a pagina de

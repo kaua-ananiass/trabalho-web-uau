@@ -1,5 +1,6 @@
 // Seleciona todos os botoes de compra da pagina.
 const botoesComprar = document.querySelectorAll(".botao-comprar");
+const cardsProdutos = document.querySelectorAll(".produto");
 
 // Seleciona a area onde o resultado da compra sera mostrado.
 const resultadoCompra = document.getElementById("resultadoCompra");
@@ -16,6 +17,11 @@ const pagamentoCliente = document.getElementById("pagamentoCliente");
 const secaoFormularioCompra = document.getElementById("secaoFormularioCompra");
 const produtoSelecionado = document.getElementById("produtoSelecionado");
 const finalizarCompraBtn = document.getElementById("finalizarCompraBtn");
+const removerUltimaCompraBtn = document.getElementById("removerUltimaCompraBtn");
+const limparComprasBtn = document.getElementById("limparComprasBtn");
+const buscaProduto = document.getElementById("buscaProduto");
+const filtroTipo = document.getElementById("filtroTipo");
+const statusFiltro = document.getElementById("statusFiltro");
 
 // Seleciona os elementos usados para trocar a moeda e mostrar a cotacao.
 const moedaSelect = document.getElementById("moedaSelect");
@@ -125,6 +131,47 @@ function mostrarProdutoSelecionado() {
     "Preco atual: " + pegarPrecoFormatado(produtoEscolhido.precoBase);
 }
 
+// Destaca visualmente o produto que foi escolhido.
+function destacarProdutoEscolhido(nomeProduto) {
+  for (let i = 0; i < cardsProdutos.length; i += 1) {
+    if (cardsProdutos[i].dataset.nome === nomeProduto.toLowerCase()) {
+      cardsProdutos[i].classList.add("produto-ativo");
+    } else {
+      cardsProdutos[i].classList.remove("produto-ativo");
+    }
+  }
+}
+
+// Filtra os produtos da tela por texto e por tipo.
+function filtrarProdutos() {
+  const termo = buscaProduto.value.trim().toLowerCase();
+  const tipo = filtroTipo.value;
+  let quantidadeVisivel = 0;
+
+  for (let i = 0; i < cardsProdutos.length; i += 1) {
+    const nome = cardsProdutos[i].dataset.nome;
+    const tipoProduto = cardsProdutos[i].dataset.tipo;
+    const passouNoTexto = termo === "" || nome.includes(termo);
+    const passouNoTipo = tipo === "todos" || tipoProduto === tipo;
+
+    if (passouNoTexto && passouNoTipo) {
+      cardsProdutos[i].style.display = "block";
+      quantidadeVisivel += 1;
+    } else {
+      cardsProdutos[i].style.display = "none";
+    }
+  }
+
+  if (quantidadeVisivel === 0) {
+    statusFiltro.textContent = "Nenhum produto combina com a busca atual.";
+  } else {
+    statusFiltro.textContent = "Mostrando " + quantidadeVisivel + " produto(s) filtrado(s).";
+  }
+
+  console.log("Filtro atualizado:");
+  console.log({ termo: termo, tipo: tipo, quantidadeVisivel: quantidadeVisivel });
+}
+
 // Verifica se todos os campos do formulario foram preenchidos.
 function validarCamposPreenchidos() {
   if (nomeCliente.value.trim() === "") {
@@ -152,6 +199,22 @@ function validarCamposPreenchidos() {
   }
 
   return true;
+}
+
+// Altera o estilo da forma de pagamento dinamicamente.
+function atualizarEstiloPagamento() {
+  pagamentoCliente.classList.remove("pagamento-pix", "pagamento-cartao", "pagamento-boleto");
+
+  if (pagamentoCliente.value === "Pix") {
+    pagamentoCliente.classList.add("pagamento-pix");
+  } else if (pagamentoCliente.value === "Cartao") {
+    pagamentoCliente.classList.add("pagamento-cartao");
+  } else if (pagamentoCliente.value === "Boleto") {
+    pagamentoCliente.classList.add("pagamento-boleto");
+  }
+
+  console.log("Pagamento alterado:");
+  console.log(pagamentoCliente.value);
 }
 
 // Gera um numero grande aleatorio para o meio do codigo.
@@ -319,6 +382,21 @@ function adicionarLinhaNaTabela(compra) {
   tabelaCompras.appendChild(linha);
 }
 
+// Desenha novamente toda a tabela com base nas compras atuais.
+function renderizarTabelaCompras() {
+  tabelaCompras.innerHTML = "";
+
+  if (listaCompras.length === 0) {
+    tabelaCompras.innerHTML =
+      '<tr><td colspan="4">Ainda nao existe compra registrada.</td></tr>';
+    return;
+  }
+
+  for (let i = 0; i < listaCompras.length; i += 1) {
+    adicionarLinhaNaTabela(listaCompras[i]);
+  }
+}
+
 // Atualiza a coluna de preco da tabela quando a moeda e trocada.
 function atualizarPrecosTabela() {
   const linhasDaTabela = tabelaCompras.querySelectorAll("tr[data-preco-base]");
@@ -399,6 +477,39 @@ async function fazerCompra(produto, preco) {
   console.log(compra);
 }
 
+// Remove a ultima compra feita.
+function removerUltimaCompra() {
+  if (listaCompras.length === 0) {
+    resultadoCompra.textContent = "Nao existe compra para remover.";
+    return;
+  }
+
+  const compraRemovida = listaCompras.pop();
+  salvarHistoricoCompras();
+  renderizarTabelaCompras();
+
+  if (listaCompras.length === 0) {
+    ultimaCompraFeita = null;
+    resultadoCompra.textContent = "A ultima compra foi removida e a tabela ficou vazia.";
+  } else {
+    ultimaCompraFeita = listaCompras[listaCompras.length - 1];
+    mostrarResultado(ultimaCompraFeita);
+  }
+
+  console.log("Compra removida:");
+  console.log(compraRemovida);
+}
+
+// Limpa toda a tabela de compras.
+function limparCompras() {
+  listaCompras = [];
+  ultimaCompraFeita = null;
+  localStorage.removeItem("historicoCompras");
+  renderizarTabelaCompras();
+  resultadoCompra.textContent = "Tabela de compras limpa.";
+  console.log("Tabela de compras limpa.");
+}
+
 // Mostra o formulario quando o usuario escolhe um produto.
 function escolherProduto(evento) {
   const botao = evento.target;
@@ -412,6 +523,7 @@ function escolherProduto(evento) {
 
   secaoFormularioCompra.classList.remove("formulario-compra-escondido");
   mostrarProdutoSelecionado();
+  destacarProdutoEscolhido(produto);
   resultadoCompra.textContent = "Preencha o formulario abaixo para finalizar a compra.";
   enderecoCompra.textContent = "Nenhum endereco foi consultado ainda.";
   nomeCliente.focus();
@@ -468,8 +580,24 @@ for (let i = 0; i < botoesComprar.length; i += 1) {
 // Quando a moeda mudar, os precos mudam junto.
 moedaSelect.addEventListener("change", trocarMoeda);
 
+// Quando o usuario digita, os produtos sao filtrados.
+buscaProduto.addEventListener("input", filtrarProdutos);
+
+// Quando o filtro muda, os produtos sao filtrados.
+filtroTipo.addEventListener("change", filtrarProdutos);
+
+// Quando o pagamento muda, o estilo do select muda junto.
+pagamentoCliente.addEventListener("change", atualizarEstiloPagamento);
+
 // Quando o formulario for enviado, a compra e finalizada.
 formCompra.addEventListener("submit", enviarFormularioCompra);
 
+// Remove a ultima compra adicionada.
+removerUltimaCompraBtn.addEventListener("click", removerUltimaCompra);
+
+// Limpa toda a lista de compras.
+limparComprasBtn.addEventListener("click", limparCompras);
+
 // Busca as cotacoes da API quando a pagina carrega.
 carregarCotacoes();
+atualizarEstiloPagamento();
