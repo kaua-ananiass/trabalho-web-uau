@@ -29,10 +29,6 @@ const statusMoeda = document.getElementById("statusMoeda");
 const precosProdutos = document.querySelectorAll(".preco-produto");
 const enderecoCompra = document.getElementById("enderecoCompra");
 
-// Define os enderecos das APIs usadas na pagina.
-const apiCotacao =
-  "https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,GBP-BRL";
-
 // Guarda todas as compras feitas durante o uso da pagina.
 let listaCompras = [];
 
@@ -91,12 +87,11 @@ async function carregarCotacoes() {
   console.log("Buscando cotacoes na AwesomeAPI.");
 
   try {
-    const resposta = await fetch(apiCotacao);
-    const dados = await resposta.json();
+    const dados = await buscarCotacoesMoedas();
 
-    cotacoes.USD = Number(dados.USDBRL.bid);
-    cotacoes.EUR = Number(dados.EURBRL.bid);
-    cotacoes.GBP = Number(dados.GBPBRL.bid);
+    cotacoes.USD = dados.USD;
+    cotacoes.EUR = dados.EUR;
+    cotacoes.GBP = dados.GBP;
 
     console.log("Cotacoes carregadas com sucesso.");
     console.log(dados);
@@ -270,21 +265,6 @@ function pegarPagamentoCliente() {
   return pagamento;
 }
 
-// Remove pontos, tracos e qualquer outro caractere que nao seja numero do CEP.
-function limparCep(valor) {
-  const cepLimpo = valor.replace(/\D/g, "");
-  return cepLimpo;
-}
-
-// Verifica se o CEP ficou com exatamente 8 numeros.
-function validarCep(cep) {
-  if (cep.length !== 8) {
-    return false;
-  }
-
-  return true;
-}
-
 // Mostra na tela o endereco encontrado para a compra.
 function mostrarEnderecoNaCompra(dados) {
   enderecoCompra.innerHTML =
@@ -298,22 +278,7 @@ function mostrarEnderecoNaCompra(dados) {
 
 // Busca o endereco da entrega usando a API do ViaCEP.
 async function buscarEnderecoPorCep() {
-  const cepOriginal = cepCliente.value;
-  const cep = limparCep(cepOriginal);
-
-  if (!validarCep(cep)) {
-    throw new Error("CEP_INVALIDO");
-  }
-
-  console.log("Buscando CEP no ViaCEP para a compra.");
-  console.log(cep);
-
-  const resposta = await fetch("https://viacep.com.br/ws/" + cep + "/json/");
-  const dados = await resposta.json();
-
-  if (dados.erro) {
-    throw new Error("CEP_NAO_ENCONTRADO");
-  }
+  const dados = await buscarCepViaCep(cepCliente.value);
 
   mostrarEnderecoNaCompra(dados);
   return dados;

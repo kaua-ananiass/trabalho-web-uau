@@ -365,18 +365,10 @@ body {
   letter-spacing: 0.4px;
 }
 
-.acoes-trilha {
-  display: flex;
-  justify-content: center;
-  margin-top: 14px;
-}
-
-.botao-trilha {
-  flex-shrink: 0;
-}
-
 .trilha-pacote {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
   margin-bottom: 20px;
 }
 
@@ -401,6 +393,22 @@ body {
 }
 
 .checkpoint::after {
+  content: "";
+  position: absolute;
+  left: 30px;
+  top: calc(100% + 6px);
+  width: 2px;
+  height: 24px;
+  background: repeating-linear-gradient(
+    to bottom,
+    #7a52c7 0,
+    #7a52c7 8px,
+    transparent 8px,
+    transparent 14px
+  );
+}
+
+.checkpoint:last-child::after {
   display: none;
 }
 
@@ -461,30 +469,40 @@ body {
   line-height: 1.45;
 }
 
-.checkpoint-passado {
-  border-color: #4d3c73;
-}
-
-.checkpoint-passado .checkpoint-bola {
-  background-color: #52348f;
-}
-
-.checkpoint-atual {
+.checkpoint-atual,
+.checkpoint-lista {
   border-color: #7a52c7;
   transform: scale(1.01);
 }
 
-.checkpoint-atual .checkpoint-bola {
+.checkpoint-atual .checkpoint-bola,
+.checkpoint-lista .checkpoint-bola {
   background-color: #7a52c7;
 }
 
-.checkpoint-futuro {
-  opacity: 0.92;
-}
-
-.checkpoint-unico {
+.checkpoint-lista {
   border-style: dashed;
   border-width: 3px;
+}
+
+.checkpoint-deslocado-0 {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.checkpoint-deslocado-1 {
+  margin-left: 36px;
+  margin-right: auto;
+}
+
+.checkpoint-deslocado-2 {
+  margin-left: 14px;
+  margin-right: auto;
+}
+
+.checkpoint-final {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 @keyframes subirSuave {
@@ -561,6 +579,8 @@ body {
   .checkpoint {
     width: 100%;
     transform: none;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .checkpoint-conteudo {
