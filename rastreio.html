@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rastreio do Pedido</title>
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+  <header class="topo">
+    <h1>Rastreio do pedido</h1>
+    <p>Digite o codigo para ver onde o pacote da loolja esta no momento.</p>
+    <nav class="menu">
+      <a href="index.html">Voltar para compra</a>
+      <a href="rastreio.html">Atualizar pagina</a>
+      <a href="sobre.html">Sobre</a>
+    </nav>
+  </header>
+
+  <main class="conteudo">
+    <section class="caixa">
+      <h2>Ultimo codigo gerado</h2>
+      <div id="codigoGerado" class="codigo-box">
+        Nenhum codigo foi gerado ainda.
+      </div>
+    </section>
+
+    <section class="caixa">
+      <h2>Buscar rastreio</h2>
+      <form id="formCep" class="formulario">
+        <label for="codigoDigitado">Codigo de rastreio</label>
+        <input type="text" id="codigoDigitado" class="campo-pequeno" placeholder="Ex: BR123456789GO">
+
+        <div class="linha-botoes">
+          <button type="submit" class="botao-simples">Rastrear pedido</button>
+          <button type="button" id="limparBtn" class="botao-simples">Limpar</button>
+        </div>
+      </form>
+
+      <div id="mensagemCep" class="resultado">
+        Digite o codigo para procurar o pacote.
+      </div>
+
+      <div id="resumoRastreio" class="codigo-box">
+        Nenhum pedido foi carregado ainda.
+      </div>
+
+      <div class="trilha-area">
+        <h3 class="titulo-trilha">Caminho da camiseta</h3>
+        <div id="trilhaPacote" class="trilha-pacote">
+          <div class="trilha-vazia">Nenhuma trilha foi carregada ainda.</div>
+        </div>
+        <div class="acoes-trilha">
+          <button type="button" id="avancarEtapaBtn" class="botao-simples botao-trilha">
+            Avancar etapa
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/cep.js"></script>
+</body>
+</html>

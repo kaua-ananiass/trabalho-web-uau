@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>loolja</title>
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+  <header class="topo">
+    <h1>loolja</h1>
+    <nav class="menu">
+      <a href="index.html">Inicio</a>
+      <a href="rastreio.html">Pesquisar CEP</a>
+      <a href="sobre.html">Sobre</a>
+    </nav>
+  </header>
+
+  <main class="conteudo">
+    <section class="caixa">
+      <h2>Informacoes do grupo</h2>
+      <ul>
+        <li>Integrante 1 - Kaua Ananias Calaca</li>
+      </ul>
+    </section>
+
+    <section class="caixa">
+      <h2>Produtos para comprar</h2>
+      <p>Escolha um produto. Depois disso o formulario da compra aparece logo abaixo para finalizar o pedido.</p>
+      <div class="moeda-box">
+        <label for="moedaSelect">Ver precos em outra moeda</label>
+        <select id="moedaSelect" class="campo-moeda">
+          <option value="BRL">Real (BRL)</option>
+          <option value="USD">Dolar (USD)</option>
+          <option value="EUR">Euro (EUR)</option>
+          <option value="GBP">Libra (GBP)</option>
+        </select>
+        <p class="api-info">Cotacoes atualizadas com a AwesomeAPI.</p>
+        <p id="statusMoeda" class="status-moeda">Precos mostrados em real.</p>
+      </div>
+
+      <div class="lista-produtos">
+        <article class="produto">
+          <img
+            class="imagem-produto"
+            src="imagens/D_Q_NP_2X_930253-MLB82586863637_022025-E-camiseta-basica-engracada-unissex-gato-huh-meme-100-algodao.png"
+            alt="Camiseta basica engracada com estampa de gato huh meme"
+          >
+          <h3>Camiseta Gato Huh</h3>
+          <p class="preco-produto" data-preco-base="49.90">Preco: R$ 49,90</p>
+          <button class="botao-comprar" data-produto="Camiseta Gato Huh" data-preco="49.90" type="button">
+            Escolher produto
+          </button>
+        </article>
+
+        <article class="produto">
+          <img
+            class="imagem-produto"
+            src="imagens/D_Q_NP_2X_645750-MLB87160395916_072025-E-camiseta-estampa-gato-meme-danger-to-society-camisa-unissex.png"
+            alt="Camiseta com estampa de gato meme danger to society"
+          >
+          <h3>Camiseta Gato Danger</h3>
+          <p class="preco-produto" data-preco-base="59.90">Preco: R$ 59,90</p>
+          <button class="botao-comprar" data-produto="Camiseta Gato Danger" data-preco="59.90" type="button">
+            Escolher produto
+          </button>
+        </article>
+
+        <article class="produto">
+          <img
+            class="imagem-produto"
+            src="imagens/D_Q_NP_2X_655339-CBT91568445436_092025-E-camiseta-meme-de-hamster-chorando-olhos-grandes-engracado.webp"
+            alt="Camiseta meme de hamster chorando com olhos grandes"
+          >
+          <h3>Camiseta Hamster Chorando</h3>
+          <p class="preco-produto" data-preco-base="54.90">Preco: R$ 54,90</p>
+          <button class="botao-comprar" data-produto="Camiseta Hamster Chorando" data-preco="54.90" type="button">
+            Escolher produto
+          </button>
+        </article>
+      </div>
+    </section>
+
+    <section id="secaoFormularioCompra" class="caixa formulario-compra-escondido">
+      <h2>Formulario da compra</h2>
+      <div id="produtoSelecionado" class="codigo-box">
+        Nenhum produto foi selecionado ainda.
+      </div>
+      <form id="formCompra" class="formulario">
+        <label for="nomeCliente">Nome do cliente</label>
+        <input type="text" id="nomeCliente" placeholder="Digite seu nome" required>
+
+        <label for="cidadeCliente">Cidade</label>
+        <input type="text" id="cidadeCliente" placeholder="Digite sua cidade" required>
+
+        <label for="cepCliente">CEP para entrega</label>
+        <input type="text" id="cepCliente" placeholder="Digite o CEP para envio" required>
+
+        <label for="pagamentoCliente">Forma de pagamento</label>
+        <select id="pagamentoCliente">
+          <option value="Pix">Pix</option>
+          <option value="Cartao">Cartao</option>
+          <option value="Boleto">Boleto</option>
+        </select>
+
+        <button id="finalizarCompraBtn" class="botao-simples" type="submit">
+          Finalizar compra
+        </button>
+      </form>
+      <p class="api-info">O CEP da entrega e buscado com a API publica ViaCEP.</p>
+      <div id="enderecoCompra" class="codigo-box">
+        Nenhum endereco foi consultado ainda.
+      </div>
+    </section>
+
+    <section class="caixa">
+      <h2>Resultado da compra</h2>
+      <div id="resultadoCompra" class="resultado">
+        Nenhuma compra foi selecionada ainda.
+      </div>
+
+      <table class="tabela">
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Produto</th>
+            <th>Preco</th>
+            <th>Codigo</th>
+          </tr>
+        </thead>
+        <tbody id="tabelaCompras">
+          <tr>
+            <td colspan="4">Ainda nao existe compra registrada.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        Depois da compra, voce pode ir para a pagina de
+        <a href="rastreio.html">rastreio do pedido</a>.
+      </p>
+    </section>
+  </main>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
