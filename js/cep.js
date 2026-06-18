@@ -26,117 +26,71 @@ function mostrarUltimoCodigo() {
   codigoDigitado.value = compraConvertida.codigo;
 }
 
-// Escolhe a imagem da etapa do MC Poze dependendo da camiseta comprada.
-function pegarImagemDaEtapaPoze(produto) {
+// Escolhe a imagem principal de acordo com o produto comprado.
+function pegarImagemDoProduto(produto) {
   if (produto === "Camiseta Gato Huh") {
-    return "imagens/etapas-envio/gatinho-huh.jpg";
+    return "imagens/D_Q_NP_2X_930253-MLB82586863637_022025-E-camiseta-basica-engracada-unissex-gato-huh-meme-100-algodao.png";
   }
 
   if (produto === "Camiseta Gato Danger") {
-    return "imagens/etapas-envio/gatinho-danger-meme.jpg";
+    return "imagens/D_Q_NP_2X_645750-MLB87160395916_072025-E-camiseta-estampa-gato-meme-danger-to-society-camisa-unissex.png";
   }
 
-  return "imagens/etapas-envio/hamster-meme.jpg";
+  return "imagens/D_Q_NP_2X_655339-CBT91568445436_092025-E-camiseta-meme-de-hamster-chorando-olhos-grandes-engracado.webp";
 }
 
-// Gera uma lista ficticia de locais e status do pacote.
+// Gera uma lista simples de etapas do pedido.
 function montarEtapasFicticias(compra) {
+  const imagemProduto = pegarImagemDoProduto(compra.produto);
+
   return [
     {
       numero: "01",
-      titulo: "Saindo do galpao clandestino da loolja",
-      descricao: "A camiseta acabou de sair do galpao mais suspeito do pais.",
-      imagem: "imagens/etapas-envio/loolja-galpao.jpg"
+      titulo: "Pedido confirmado",
+      descricao: "Seu pedido foi registrado com sucesso no sistema da loolja.",
+      imagem: imagemProduto
     },
     {
       numero: "02",
-      titulo: "Perdido em todo mundo em panico",
-      descricao: "Ja liberou, sem danos, mas deu uma preocupada geral no setor.",
-      imagem: "imagens/etapas-envio/iaeee.webp"
+      titulo: "Pagamento aprovado",
+      descricao: "O pagamento foi aprovado e o pedido foi liberado para separacao.",
+      imagem: imagemProduto
     },
     {
       numero: "03",
-      titulo: "Imposto sobre envio",
-      descricao: "Foi cobrado um adicional de 150 porque aparentemente respirar tambem gera taxa.",
+      titulo: "Tributacao do envio",
+      descricao: "O pedido passou pela etapa de tributacao antes de seguir para a separacao.",
       imagem: "imagens/etapas-envio/corre-taxade.webp"
     },
     {
       numero: "04",
-      titulo: "Casa do mini messi",
-      descricao: "A encomenda parou para ver o mini messi jogar muito.",
-      imagem: "imagens/etapas-envio/messi-meme.png"
+      titulo: "Pedido em embalagem",
+      descricao: "O produto foi embalado e esta pronto para seguir transporte.",
+      imagem: imagemProduto
     },
     {
       numero: "05",
       titulo: "Perdido em Curitiba",
-      descricao: "Pessima hora para isso, mas o pacote sumiu por uns instantes.",
+      descricao: "O pedido teve um atraso no centro logistico de Curitiba antes de continuar a rota.",
       imagem: "imagens/etapas-envio/curitiba-meme.png"
     },
     {
       numero: "06",
-      titulo: "Encontrado pelo Manoel Gomes",
-      descricao: "Obrigado, Caneta Azul. O pacote foi recuperado em grande estilo.",
-      imagem: "imagens/etapas-envio/manoel.webp"
-    },
-    {
-      numero: "07",
-      titulo: "Em transito",
-      descricao: "A camisa entrou num engarrafamento absurdo na avenida.",
+      titulo: "Em transporte",
+      descricao: "O pedido esta em deslocamento para o centro de distribuicao da sua regiao.",
       imagem: "imagens/etapas-envio/engarrafamento.png"
     },
     {
-      numero: "08",
-      titulo: "Imposto pela demora do engarrafamento",
-      descricao: "A vida nao esta facil e inventaram mais uma taxa no caminho.",
-      imagem: "imagens/etapas-envio/corre-taxade.webp"
-    },
-    {
-      numero: "09",
-      titulo: "Perdida na casa do MC Poze",
-      descricao: "Ele encontrou sua camisa e analisou bem a estampa escolhida.",
-      imagem: pegarImagemDaEtapaPoze(compra.produto)
-    },
-    {
-      numero: "10",
-      titulo: "Policia invadiu e recuperou sua camiseta",
-      descricao: "Gloria. A operacao deu certo e sua camiseta voltou para o rastreio.",
-      imagem: "imagens/etapas-envio/policial-voou.jpg"
-    },
-    {
-      numero: "11",
-      titulo: "Em transito novamente",
-      descricao: "Agora chega. Pelo menos dessa vez parece que vai andar.",
-      imagem: "imagens/etapas-envio/aleluia.webp"
-    },
-    {
-      numero: "12",
-      titulo: "Passeando pelo oceano",
-      descricao: "Foi visto um doguinho na praia refletindo enquanto o pacote passava.",
-      imagem: "imagens/etapas-envio/doguinho.webp"
-    },
-    {
-      numero: "13",
-      titulo: "Foi aceito o suborno nos Correios",
-      descricao: "Sinto muito. A situacao ficou meio triste para a sua camiseta.",
-      imagem: "imagens/etapas-envio/perdeu-triste.jpg"
-    },
-    {
-      numero: "14",
-      titulo: "Cachorro caramelo pegou ela",
-      descricao: "Nosso heroi entrou em acao e assumiu a entrega por conta propria.",
-      imagem: "imagens/etapas-envio/caramelo-pegou.jpg"
-    },
-    {
-      numero: "15",
-      titulo: "Ela esta a caminho da sua casa",
-      descricao: "Agora sim vai chegar. Esta vindo a toda velocidade.",
+      numero: "07",
+      titulo: "Saiu para entrega",
+      descricao: "O pedido saiu para entrega no endereco informado na compra.",
       imagem: "imagens/etapas-envio/salvou.jpg"
     },
     {
-      numero: "16",
-      titulo: "O nosso heroi",
-      descricao: "Boaa. Fim da jornada da camiseta com honra maxima.",
-      imagem: "imagens/etapas-envio/heroi-dms.jpg"
+      numero: "08",
+      titulo: "Entrega concluida",
+      descricao: "O pedido foi entregue com sucesso no endereco cadastrado.",
+      imagem: imagemProduto
     }
   ];
 }

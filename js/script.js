@@ -28,6 +28,7 @@ const moedaSelect = document.getElementById("moedaSelect");
 const statusMoeda = document.getElementById("statusMoeda");
 const precosProdutos = document.querySelectorAll(".preco-produto");
 const enderecoCompra = document.getElementById("enderecoCompra");
+const climaEntrega = document.getElementById("climaEntrega");
 
 // Guarda todas as compras feitas durante o uso da pagina.
 let listaCompras = [];
@@ -81,7 +82,11 @@ function atualizarStatusMoeda(texto) {
   statusMoeda.textContent = texto;
 }
 
+
 // Busca as cotacoes da AwesomeAPI para usar na loja.
+
+
+
 async function carregarCotacoes() {
   atualizarStatusMoeda("Carregando cotacoes da AwesomeAPI...");
   console.log("Buscando cotacoes na AwesomeAPI.");
@@ -105,7 +110,11 @@ async function carregarCotacoes() {
   }
 }
 
+
 // Atualiza os precos dos cards dos produtos.
+
+
+
 function atualizarPrecosProdutos() {
   for (let i = 0; i < precosProdutos.length; i += 1) {
     const precoBase = Number(precosProdutos[i].dataset.precoBase);
@@ -114,7 +123,12 @@ function atualizarPrecosProdutos() {
   }
 }
 
+
+
 // Mostra o produto escolhido acima do formulario.
+
+
+
 function mostrarProdutoSelecionado() {
   if (!produtoEscolhido) {
     produtoSelecionado.textContent = "Nenhum produto foi selecionado ainda.";
@@ -137,7 +151,9 @@ function destacarProdutoEscolhido(nomeProduto) {
   }
 }
 
-// Filtra os produtos da tela por texto e por tipo.
+// filtro pra listar os produtos por tipo
+
+
 function filtrarProdutos() {
   const termo = buscaProduto.value.trim().toLowerCase();
   const tipo = filtroTipo.value;
@@ -167,7 +183,13 @@ function filtrarProdutos() {
   console.log({ termo: termo, tipo: tipo, quantidadeVisivel: quantidadeVisivel });
 }
 
-// Verifica se todos os campos do formulario foram preenchidos.
+
+
+
+// Verificador se os campos foram preenchidos
+
+
+
 function validarCamposPreenchidos() {
   if (nomeCliente.value.trim() === "") {
     resultadoCompra.textContent = "Preencha o nome do cliente para continuar.";
@@ -197,6 +219,8 @@ function validarCamposPreenchidos() {
 }
 
 // Altera o estilo da forma de pagamento dinamicamente.
+
+
 function atualizarEstiloPagamento() {
   pagamentoCliente.classList.remove("pagamento-pix", "pagamento-cartao", "pagamento-boleto");
 
@@ -212,23 +236,23 @@ function atualizarEstiloPagamento() {
   console.log(pagamentoCliente.value);
 }
 
-// Gera um numero grande aleatorio para o meio do codigo.
+// gera o numero de rastreio
 function gerarNumeroAleatorio() {
   const numero = Math.floor(Math.random() * 900000000) + 100000000;
   return numero;
 }
 
-// Define as letras do inicio do codigo.
+// Define letra comeco rastreio
 function gerarLetrasInicio() {
   return "BR";
 }
 
-// Define as letras do final do codigo.
+// define letra final rastreio
 function gerarLetrasFim() {
   return "GO";
 }
 
-// Junta letras e numeros para montar um codigo parecido com os Correios.
+// Monta o codigo do rastreio
 function gerarCodigoCorreios() {
   const inicio = gerarLetrasInicio();
   const meio = gerarNumeroAleatorio();
@@ -237,7 +261,7 @@ function gerarCodigoCorreios() {
   return codigoFinal;
 }
 
-// Pega o nome digitado. Se estiver vazio, coloca um texto padrao.
+// Pega o nome digitado
 function pegarNomeCliente() {
   const nome = nomeCliente.value.trim();
 
@@ -248,7 +272,8 @@ function pegarNomeCliente() {
   return nome;
 }
 
-// Pega a cidade digitada. Se estiver vazia, coloca um texto padrao.
+// Pega a cidade digitada
+
 function pegarCidadeCliente() {
   const cidade = cidadeCliente.value.trim();
 
@@ -276,12 +301,35 @@ function mostrarEnderecoNaCompra(dados) {
     "Estado: " + dados.uf;
 }
 
+// Mostra na tela o clima atual da cidade da entrega.
+function mostrarClimaNaCompra(dadosClima) {
+  climaEntrega.innerHTML =
+    "<strong>Clima atual da entrega:</strong><br>" +
+    "Cidade: " + dadosClima.cidade + "<br>" +
+    "Estado: " + dadosClima.estado + "<br>" +
+    "Temperatura: " + dadosClima.temperatura + " graus<br>" +
+    "Sensacao termica: " + dadosClima.sensacao + " graus<br>" +
+    "Situacao: " + dadosClima.descricao;
+}
+
 // Busca o endereco da entrega usando a API do ViaCEP.
 async function buscarEnderecoPorCep() {
   const dados = await buscarCepViaCep(cepCliente.value);
 
   mostrarEnderecoNaCompra(dados);
   return dados;
+}
+
+// Busca o clima da cidade de entrega usando a Open-Meteo.
+async function buscarClimaDaEntrega(cidade) {
+  try {
+    const dadosClima = await buscarClimaPorCidade(cidade);
+    mostrarClimaNaCompra(dadosClima);
+  } catch (erro) {
+    climaEntrega.textContent = "Nao foi possivel consultar o clima dessa cidade agora.";
+    console.log("Erro ao consultar clima no Open-Meteo.");
+    console.log(erro);
+  }
 }
 
 // Salva somente o ultimo codigo gerado no localStorage.
@@ -400,22 +448,27 @@ async function fazerCompra(produto, preco) {
     if (erro.message === "CEP_INVALIDO") {
       resultadoCompra.textContent = "Digite um CEP valido com 8 numeros para finalizar a compra.";
       enderecoCompra.textContent = "Nenhum endereco foi consultado ainda.";
+      climaEntrega.textContent = "Nenhum clima foi consultado ainda.";
       return;
     }
 
     if (erro.message === "CEP_NAO_ENCONTRADO") {
       resultadoCompra.textContent = "O CEP informado nao foi encontrado. Digite um CEP existente.";
       enderecoCompra.textContent = "Nenhum endereco foi consultado ainda.";
+      climaEntrega.textContent = "Nenhum clima foi consultado ainda.";
       return;
     }
 
     resultadoCompra.textContent = "Ocorreu um erro ao consultar o CEP da entrega.";
     enderecoCompra.textContent = "Nenhum endereco foi consultado ainda.";
+    climaEntrega.textContent = "Nenhum clima foi consultado ainda.";
 
     console.log("Erro ao consultar CEP na compra.");
     console.log(erro);
     return;
   }
+
+  await buscarClimaDaEntrega(endereco.localidade);
 
   const compra = {
     cliente: pegarNomeCliente(),
@@ -491,6 +544,7 @@ function escolherProduto(evento) {
   destacarProdutoEscolhido(produto);
   resultadoCompra.textContent = "Preencha o formulario abaixo para finalizar a compra.";
   enderecoCompra.textContent = "Nenhum endereco foi consultado ainda.";
+  climaEntrega.textContent = "Nenhum clima foi consultado ainda.";
   nomeCliente.focus();
 }
 

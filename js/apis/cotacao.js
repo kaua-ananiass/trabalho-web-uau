@@ -1,4 +1,4 @@
-// Guarda o endereco da AwesomeAPI usado para buscar as cotacoes.
+
 const apiCotacao =
   "https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,GBP-BRL";
 
